@@ -1,2 +1,100 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/Slovuan-Swan/frontend-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Slovuan-Swan/frontend-project-386/actions)
+# 📞 Call Calendar
+
+[![Hexlet Check](https://github.com/Slovuan-Swan/frontend-project-386/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/Slovuan-Swan/frontend-project-386/actions)
+[![Playwright E2E](https://github.com/Slovuan-Swan/frontend-project-386/actions/workflows/playwright.yml/badge.svg)](https://github.com/Slovuan-Swan/frontend-project-386/actions/workflows/playwright.yml)
+
+Сервис бронирования встреч с публичной (гостевой) и административной частями.  
+Проект выполнен в подходе **Design First** — API-контракт описан на [TypeSpec](https://typespec.io/) до реализации.
+
+## 🚀 Демо
+
+Развёрнутое приложение доступно по адресу:  
+**[https://ваш-сервис.onrender.com](https://ваш-сервис.onrender.com)**
+
+## 🧱 Архитектура
+
+- **Frontend** — React 19 + TypeScript, Vite, shadcn/ui, React Router.
+- **Backend** — Express 5, TypeScript, хранение данных в памяти.
+- **Контракт API** — описан в TypeSpec (`/models`, `/routes`), сгенерирован OpenAPI.
+- **Тестирование** — Playwright для end-to-end сценариев.
+
+## ✨ Возможности
+
+- 📅 **Выбор типа встречи** — гость видит список доступных событий с названием, описанием и длительностью.
+- 🕒 **Календарь свободных слотов** — динамическая загрузка доступных интервалов в пределах 14-дневного окна записи.
+- ✅ **Бронирование** — заполнение имени и email, сохранение записи с защитой от повторной записи на одно и то же время.
+- 🔒 **Административная панель** — создание, редактирование, удаление типов событий; просмотр всех предстоящих бронирований.
+- 🛡️ **Гарантия целостности** — проверка занятости слота на бэкенде, возврат понятных ошибок при конфликтах.
+- 🐳 **Контейнеризация** — запуск одной командой в Docker.
+
+## 🔧 Локальный запуск (разработка)
+
+```bash
+# Установка зависимостей
+npm ci
+cd backend && npm ci
+cd ../frontend && npm ci
+
+# Запуск бэкенда (порт 3000) и фронтенда (5173) параллельно
+npm run start:test
+```
+
+# Фронтенд доступен на http://localhost:5173, API на http://localhost:3000.
+
+## 🐳 Запуск в Docker
+
+bash
+docker build -t call-calendar .
+docker run -p 3000:3000 -e PORT=3000 call-calendar
+Приложение будет доступно на http://localhost:3000.
+
+## 🧪 Тесты
+
+bash
+
+# E2E тесты (Playwright)
+
+npm run test:e2e
+
+# Просмотр отчёта
+
+npx playwright show-report
+В CI используются:
+
+Hexlet Check — сборка и запуск в Docker.
+
+Playwright — автоматические E2E тесты на Chromium.
+
+## 📋 Основные сценарии
+
+1. Бронирование слота
+   Гость выбирает тип встречи → переходит на календарь.
+
+Видит свободные слоты, выбирает удобное время.
+
+Вводит имя и email, подтверждает бронирование.
+
+Запись сохраняется и отображается в админ-панели.
+
+2. Конфликт занятости
+   При попытке забронировать уже занятый слот сервер возвращает 409 Conflict.
+
+Повторная запись не создаётся, гость видит ошибку.
+
+## 🛠️ Возможные улучшения
+
+Кастомное расписание — рабочие часы, перерывы, выходные.
+
+Таймзоны — учёт часового пояса владельца календаря.
+
+Аутентификация — несколько пользователей с личными календарями.
+
+Уведомления — email/Telegram напоминания.
+
+Интеграция — синхронизация с Google Calendar, Outlook.
+
+Аналитика — статистика по записям и загрузке.
+
+## 📄 Лицензия
+
+MIT
