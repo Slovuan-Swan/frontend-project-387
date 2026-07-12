@@ -90,6 +90,9 @@ export function AdminBookingsPage() {
                       <div className="text-xs text-muted-foreground">
                         {booking.eventType.description}
                       </div>
+                      <div className="text-xs text-muted-foreground font-mono">
+                        {booking.eventType.id}
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>
