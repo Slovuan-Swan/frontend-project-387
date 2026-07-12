@@ -24,6 +24,5 @@ export default defineConfig({
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
     timeout: 180 * 1000,
-    port: 5173, // Явно указываем порт
   },
 });
