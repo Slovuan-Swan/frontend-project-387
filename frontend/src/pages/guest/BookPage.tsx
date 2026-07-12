@@ -46,7 +46,10 @@ export function GuestBookPage() {
     setLoading(true);
     setError(null);
 
-    Promise.all([publicApi.getEventType(id), publicApi.getAvailability({ eventTypeId: id })])
+    Promise.all([
+      publicApi.getEventType(id),
+      publicApi.getAvailability({ eventTypeId: id }),
+    ])
       .then(([loadedEventType, loadedSlots]) => {
         setEventType(loadedEventType);
         setSlots(loadedSlots);
@@ -65,7 +68,9 @@ export function GuestBookPage() {
       grouped.set(dayKey, daySlots);
     }
 
-    return [...grouped.entries()].sort(([left], [right]) => left.localeCompare(right));
+    return [...grouped.entries()].sort(([left], [right]) =>
+      left.localeCompare(right),
+    );
   }, [slots]);
 
   const handleSubmit = async () => {
@@ -85,11 +90,15 @@ export function GuestBookPage() {
       setSelectedSlot(null);
       setGuestName("");
       setGuestEmail("");
-      const refreshedSlots = await publicApi.getAvailability({ eventTypeId: eventType.id });
+      const refreshedSlots = await publicApi.getAvailability({
+        eventTypeId: eventType.id,
+      });
       setSlots(refreshedSlots);
     } catch (err) {
       const message =
-        err instanceof ApiError ? err.message : "Не удалось создать бронирование";
+        err instanceof ApiError
+          ? err.message
+          : "Не удалось создать бронирование";
       setSubmitError(message);
     } finally {
       setSubmitting(false);
@@ -111,7 +120,9 @@ export function GuestBookPage() {
         </Button>
         <Alert variant="destructive">
           <AlertTitle>Ошибка</AlertTitle>
-          <AlertDescription>{error ?? "Тип события не найден"}</AlertDescription>
+          <AlertDescription>
+            {error ?? "Тип события не найден"}
+          </AlertDescription>
         </Alert>
       </div>
     );
@@ -123,11 +134,12 @@ export function GuestBookPage() {
         <div>
           <Button asChild variant="outline" size="sm" className="mb-4">
             <Link to="/">
-              <ArrowLeft className="size-4" />
-              К типам событий
+              <ArrowLeft className="size-4" />К типам событий
             </Link>
           </Button>
-          <h1 className="text-2xl font-semibold tracking-tight">{eventType.title}</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            {eventType.title}
+          </h1>
           <p className="mt-1 max-w-2xl text-sm text-muted-foreground">
             {eventType.description}
           </p>
@@ -151,8 +163,12 @@ export function GuestBookPage() {
             Свободные слоты
           </CardTitle>
           <CardDescription>
-            Окно записи: с {format(startOfDay(new Date()), "d MMMM", { locale: ru })} по{" "}
-            {format(addDays(startOfDay(new Date()), 14), "d MMMM yyyy", { locale: ru })}.
+            Окно записи: с{" "}
+            {format(startOfDay(new Date()), "d MMMM", { locale: ru })} по{" "}
+            {format(addDays(startOfDay(new Date()), 14), "d MMMM yyyy", {
+              locale: ru,
+            })}
+            .
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -188,7 +204,10 @@ export function GuestBookPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={Boolean(selectedSlot)} onOpenChange={(open) => !open && setSelectedSlot(null)}>
+      <Dialog
+        open={Boolean(selectedSlot)}
+        onOpenChange={(open) => !open && setSelectedSlot(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Подтверждение бронирования</DialogTitle>
