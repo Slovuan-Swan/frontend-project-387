@@ -10,7 +10,7 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:5173",
     trace: "on-first-retry",
-    actionTimeout: 15000, // увеличиваем таймаут для действий
+    actionTimeout: 15000,
     navigationTimeout: 15000,
   },
   projects: [
@@ -23,6 +23,7 @@ export default defineConfig({
     command: "npm run start:test",
     url: "http://localhost:5173",
     reuseExistingServer: !process.env.CI,
-    timeout: 180 * 1000, // 3 минуты на запуск
+    timeout: 180 * 1000,
+    port: 5173, // Явно указываем порт
   },
 });
