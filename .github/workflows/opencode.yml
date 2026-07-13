@@ -26,6 +26,7 @@ jobs:
         uses: anomalyco/opencode/github@dev
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           provider: openrouter
           model: openrouter/qwen/qwen3-coder
