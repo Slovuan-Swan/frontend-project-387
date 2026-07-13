@@ -6,28 +6,24 @@ on:
 
 jobs:
   opencode:
-    # Запускаем только если коммент содержит команду /oc или /opencode
     if: |
       contains(github.event.comment.body, '/oc') || 
       contains(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
+    # Явно даем права внутри воркфлоу на запись в issues
     permissions:
-      id-token: write
-      contents: read
-      pull-requests: write
       issues: write
+      pull-requests: write
+      contents: write
+      id-token: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Run OpenCode
         uses: anomalyco/opencode/github@latest
         env:
-          # Передаем секрет с ключом Gemini, который мы получили на 1 шаге
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Если библиотека просит общую переменную, можно продублировать:
-          # LLM_MODEL: google/gemini-2.5-flash
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         with:
-          # Указываем провайдера и модель для OpenCode в формате provider/model
           model: google/gemini-2.5-flash
