@@ -30,9 +30,8 @@ jobs:
       - name: Run OpenCode
         uses: anomalyco/opencode/github@dev
         env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
-          provider: openrouter
-          model: openrouter/qwen/qwen3-next-80b-a3b-thinking
+          model: google/gemini-1.5-flash
           use_github_token: true
