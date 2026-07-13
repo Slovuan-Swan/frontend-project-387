@@ -6,21 +6,19 @@ on:
 
 jobs:
   opencode:
-    if: |
-      contains(github.event.comment.body, '/oc') || 
-      contains(github.event.comment.body, '/opencode')
+    if: contains(github.event.comment.body, '/oc') || contains(github.event.comment.body, '/opencode')
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
       contents: write
-      id-token: write
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+          token: ${{ secrets.PAT_TOKEN }} # чтобы коммиты шли от вашего имени
 
       - name: Configure git
         run: |
@@ -33,5 +31,6 @@ jobs:
           GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
-          model: google/gemini-3.5-flash
+          # Используем модель с высоким лимитом (1500 запросов/день)
+          model: google/gemini-3-flash
           use_github_token: true
