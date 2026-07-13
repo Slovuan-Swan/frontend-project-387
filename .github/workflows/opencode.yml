@@ -34,5 +34,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           provider: openrouter
-          model: openrouter/qwen/qwen3-next
+          model: openrouter/qwen/qwen3-next-80b-a3b-thinking
           use_github_token: true
