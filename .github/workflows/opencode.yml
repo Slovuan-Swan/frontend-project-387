@@ -22,6 +22,11 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Configure git
+        run: |
+          git config --global user.email "vaceslavlebedev825@gmail.com"
+          git config --global user.name "Slovuan-Swan"
+
       - name: Run OpenCode
         uses: anomalyco/opencode/github@dev
         env:
@@ -29,5 +34,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
           provider: openrouter
-          model: openrouter/qwen/qwen3-coder
+          model: openrouter/qwen/qwen3-next
           use_github_token: true
