@@ -30,4 +30,5 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         with:
-          model: openai/gpt-4.1-mini
+          model: openai/gpt-3.5-turbo
+          language: ru
