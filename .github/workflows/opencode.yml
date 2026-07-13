@@ -30,3 +30,4 @@ jobs:
         with:
           provider: openrouter
           model: openrouter/qwen/qwen3-coder
+          use_github_token: true
