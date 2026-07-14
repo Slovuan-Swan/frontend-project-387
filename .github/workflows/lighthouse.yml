@@ -33,6 +33,9 @@ jobs:
           npm run start:test &
           sleep 10
 
+      - name: Create reports directory
+        run: mkdir -p lighthouse-results
+
       - name: Run Lighthouse on guest page
         run: |
           npx lighthouse http://localhost:5173/ \
