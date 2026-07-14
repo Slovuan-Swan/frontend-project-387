@@ -1,0 +1,75 @@
+name: Lighthouse Audit
+
+on:
+  schedule:
+    # Каждый день в 3:00 UTC (пример)
+    - cron: "0 3 * * *"
+  workflow_dispatch: # ручной запуск
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Устанавливаем зависимости для всего проекта
+      - name: Install all dependencies
+        run: |
+          npm ci
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      # Собираем фронтенд и бэкенд (если нужно)
+      - name: Build
+        run: |
+          cd backend && npm run build
+          cd ../frontend && npm run build
+
+      # Запускаем приложение в фоне (используем start:test)
+      - name: Start application
+        run: |
+          npm run start:test &
+          echo "Waiting for servers to be ready..."
+          npx wait-on http://localhost:5173 http://localhost:3000
+        env:
+          PORT: 3000
+
+      # Запускаем Lighthouse для ключевых страниц
+      - name: Run Lighthouse on guest page
+        run: |
+          npx lighthouse http://localhost:5173/ \
+            --output=html,json \
+            --output-path=./lighthouse-results/guest-index \
+            --chrome-flags="--no-sandbox --headless" \
+            --max-wait-for-load=30000
+
+      - name: Run Lighthouse on booking page
+        run: |
+          # Предположим, что есть тип события с id "intro", иначе предварительно создадим
+          npx lighthouse http://localhost:5173/book/intro \
+            --output=html,json \
+            --output-path=./lighthouse-results/guest-booking \
+            --chrome-flags="--no-sandbox --headless" \
+            --max-wait-for-load=30000
+
+      - name: Run Lighthouse on admin page
+        run: |
+          npx lighthouse http://localhost:5173/admin/event-types \
+            --output=html,json \
+            --output-path=./lighthouse-results/admin-event-types \
+            --chrome-flags="--no-sandbox --headless" \
+            --max-wait-for-load=30000
+
+      # Сохраняем отчёты как артефакт сборки
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-reports
+          path: lighthouse-results/
+          retention-days: 30
