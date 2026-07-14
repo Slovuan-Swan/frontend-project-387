@@ -21,16 +21,19 @@ jobs:
       issues: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Configure git
         run: |
           git config --global user.email "vaceslavlebedev825@gmail.com"
           git config --global user.name "Slovuan-Swan"
+
       - name: Run opencode
         uses: anomalyco/opencode/github@latest
         env:
           OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
         with:
           model: opencode/big-pickle
-          auto: "true"
+          use_github_token: true
