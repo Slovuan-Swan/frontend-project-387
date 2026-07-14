@@ -37,15 +37,15 @@ router.post("/", (req, res) => {
     });
   }
 
-  if (isSlotTaken(startAt)) {
+  const endAt = new Date(parseISO(startAt));
+  endAt.setMinutes(endAt.getMinutes() + eventType.durationMinutes);
+
+  if (isSlotTaken(startAt, endAt.toISOString())) {
     return res.status(409).json({
       code: "slot_unavailable",
       message: "Slot already booked",
     });
   }
-
-  const endAt = new Date(parseISO(startAt));
-  endAt.setMinutes(endAt.getMinutes() + eventType.durationMinutes);
 
   const newBooking: Booking = {
     id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
